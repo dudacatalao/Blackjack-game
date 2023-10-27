@@ -1,15 +1,11 @@
 class Jogador():
-    def __init__(self, nome, fichas, idade):
+    def __init__(self, nome, fichas, idade, cartas):
         self.nome = nome
         self.fichas = fichas
         self.idade = idade
+        self.cartas = []
 
-    def menu(self):
-        print("Welcome to my 21 game")
-        print("Let's start!")
-        print("")
-
-    def cartas(self, az, one, two, three, four, five, six, seven, eight, nine, ten, Q, J, K):
+    def baralho(self, az, one, two, three, four, five, six, seven, eight, nine, ten, Q, J, K):
         self.az = 1
         self.two = 2
         self.three = 3
@@ -24,4 +20,8 @@ class Jogador():
         self.J = 10
         self.K = 10
 
-
+class Jogo():
+    def __init__(self):
+        print("Welcome to my twenty-one game!!!")
+        print("1 - Start game")
+        print("2- ")
