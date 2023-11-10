@@ -56,57 +56,52 @@ class Jogo():
               "\nThe bet is typically returned in case of a tie.")
         self.menu()
 
-    def sortear_cartas(self):
-        for _ in range(2):
+    def sortear_cartas(self, jogador):
+        for i in range(2):
             carta = random.choice(list(self.baralho.keys()))
-            self.jogador1.cartas_jogador.append(carta)
+            jogador.cartas_jogador.append(carta)
             del self.baralho[carta]
 
-            carta = random.choice(list(self.baralho.keys()))
-            self.jogador2.cartas_jogador.append(carta)
-            del self.baralho[carta]
-
-    def somar_cartas(self):
-        soma_jogador1 = sum(self.cartas_jogador1)
-        soma_jogador2 = sum(self.cartas_jogador2)
-
-        return soma_jogador2, soma_jogador1
+    def somar_cartas(self, jogador):
+        def somar_cartas(self):
+            soma_jogador1 = sum(self.jogador1.cartas_jogador)
+            soma_jogador2 = sum(self.jogador2.cartas_jogador)
+            print(soma_jogador1)
+            print(soma_jogador2)
 
     def start_game(self):
         print("Let's start!")
 
-        self.sortear_cartas()
+        self.sortear_cartas(self.jogador1)
+        self.sortear_cartas(self.jogador2)
 
         while True:
+            print("---------------------------------------------------------------------------------------------------------------")
             print(f'Cartas {self.jogador1.nome}: {self.jogador1.cartas_jogador}')
-
             print(f'Cartas {self.jogador2.nome}: {self.jogador2.cartas_jogador}')
 
             acao_jogador1 = int(input(f'{self.jogador1.nome}, deseja:'
-                                      f'1- Pedir cartas'
-                                      f'2- Parar'))
+                                      f'\n1- Pedir cartas'
+                                      f'\n2- Parar'))
+
+            if acao_jogador1 == 1:
+                self.sortear_cartas(self.jogador1)
 
             acao_jogador2 = int(input(f'{self.jogador2.nome} deseja pedir cartas?:'
-                                      f'\n1- Sim'
-                                      f'\n2- Não'))
+                                      f'\n1- Pedir cartas'
+                                      f'\n2- Parar'))
 
-            match acao_jogador1:
-                case 1:
-                    self.sortear_cartas()
-                    self.verificar_vencedor()
+            if acao_jogador2 == 1:
+                self.sortear_cartas(self.jogador2)
 
-                case 2:
-                    self.verificar_vencedor()
-
-            match acao_jogador2:
-                case 1:
-                    self.sortear_cartas()
-                    self.verificar_vencedor()
-
-                case 2:
-                    self.verificar_vencedor()
+            if acao_jogador1 == 2 or acao_jogador2 == 2:
+                self.verificar_vencedor()
 
     def verificar_vencedor(self):
+        self.somar_cartas()
+
+        print(f'{self.jogador1.nome}, suas cartas: {self.jogador1.cartas_jogador}, total: {self.soma_jogador1}')
+        print(f'{self.jogador2.nome}, suas cartas: {self.jogador2.cartas_jogador}, total: {self.soma_jogador2}')
 
         if self.soma_jogador1 == 21:
             print(f'{self.jogador1.nome}, you won! Congrats!')
