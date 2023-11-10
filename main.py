@@ -66,6 +66,12 @@ class Jogo():
             self.jogador2.cartas_jogador.append(carta)
             del self.baralho[carta]
 
+    def somar_cartas(self):
+        soma_jogador1 = sum(self.cartas_jogador1)
+        soma_jogador2 = sum(self.cartas_jogador2)
+
+        return soma_jogador2, soma_jogador1
+
     def start_game(self):
         print("Let's start!")
 
@@ -86,7 +92,7 @@ class Jogo():
 
             match acao_jogador1:
                 case 1:
-                    self.sortear_cartas(self.jogador1)
+                    self.sortear_cartas()
                     self.verificar_vencedor()
 
                 case 2:
@@ -94,45 +100,43 @@ class Jogo():
 
             match acao_jogador2:
                 case 1:
-                    self.sortear_cartas(self.jogador2)
+                    self.sortear_cartas()
                     self.verificar_vencedor()
 
                 case 2:
                     self.verificar_vencedor()
 
     def verificar_vencedor(self):
-        soma_jogador1 = self.soma_jogador1 = sum(self.cartas_jogador)
-        soma_jogador2 = self.soma_jogador2 = sum(self.cartas_jogador)
 
-        if soma_jogador1 == 21:
+        if self.soma_jogador1 == 21:
             print(f'{self.jogador1.nome}, you won! Congrats!')
             self.menu()
 
-        elif soma_jogador2 == 21:
+        elif self.soma_jogador2 == 21:
             print(f'{self.jogador2.nome}, you won! Congrats!')
             self.menu()
 
-        elif soma_jogador1 > 21 and soma_jogador2 > 21:
+        elif self.soma_jogador1 > 21 and self.soma_jogador2 > 21:
             print("You tied")
             self.menu()
 
-        elif soma_jogador1 > 21:
+        elif self.soma_jogador1 > 21:
             print(f'{self.jogador1.nome}, você ultrapassou 21. Você perdeu!')
             self.menu()
 
-        elif soma_jogador2 > 21:
+        elif self.soma_jogador2 > 21:
             print(f'{self.jogador2.nome}, você ultrapassou 21. Você perdeu!')
             self.menu()
 
-        elif 21 >= soma_jogador1 > soma_jogador2:
+        elif 21 >= self.soma_jogador1 > self.soma_jogador2:
             print(f'{self.jogador1.nome}, you won! Congrats!')
             self.menu()
 
-        elif 21 >= soma_jogador2 > soma_jogador1:
+        elif 21 >= self.soma_jogador2 > self.soma_jogador1:
             print(f'{self.jogador2.nome}, you won! Congrats!')
             self.menu()
 
-        elif soma_jogador1 == soma_jogador2:
+        elif self.soma_jogador1 == self.soma_jogador2:
             print("You tied!")
             self.menu()
 
