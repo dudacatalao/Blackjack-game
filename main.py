@@ -16,30 +16,36 @@ class Jogo():
         }
 
     def menu(self):
-        print("-------------------------------------"
-              "|   Welcome to my Blackjack game!   |"
-              "-------------------------------------")
-        print("1- Start game")
-        print("2- See value of cards")
-        print("3- Rules")
-        print("4- Exit game")
-        option = int(input("What you want to do? "))
-        print("---------------------------------------------------------------------------------------------------------------")
+        try:
+            print("------"
+                  "|   Welcome to my Blackjack game!   |"
+                  "------")
+            print("1- Start game")
+            print("2- See value of cards")
+            print("3- Rules")
+            print("4- Exit game")
+            option = int(input("What you want to do? "))
+            print("-" * 50)
 
-        match option:
-            case 1:
-                self.start_game()
+            match option:
+                case 1:
+                    self.start_game()
 
-            case 2:
-                print("Value of cards:")
-                print(self.get_baralho())
-                self.menu()
+                case 2:
+                    print("Value of cards:")
+                    print(self.get_baralho())
+                    self.menu()
 
-            case 3:
-                self.regras()
+                case 3:
+                    self.regras()
 
-            case 4:
-                exit()
+                case 4:
+                    exit()
+        except ValueError:
+            print("-" * 50)
+            print("Invalid data")
+            self.menu()
+
 
     def get_baralho(self):
         return self.baralho
@@ -62,78 +68,72 @@ class Jogo():
             jogador.cartas_jogador.append(carta)
             del self.baralho[carta]
 
-    def somar_cartas(self, jogador):
-        def somar_cartas(self):
-            soma_jogador1 = sum(self.jogador1.cartas_jogador)
-            soma_jogador2 = sum(self.jogador2.cartas_jogador)
-            print(soma_jogador1)
-            print(soma_jogador2)
+    def somar_cartas(self):
+
+
 
     def start_game(self):
         print("Let's start!")
 
-        self.sortear_cartas(self.jogador1)
-        self.sortear_cartas(self.jogador2)
+        try:
+            self.sortear_cartas(self.jogador1)
+            self.sortear_cartas(self.jogador2)
 
-        while True:
-            print("---------------------------------------------------------------------------------------------------------------")
-            print(f'Cartas {self.jogador1.nome}: {self.jogador1.cartas_jogador}')
-            print(f'Cartas {self.jogador2.nome}: {self.jogador2.cartas_jogador}')
+            while True:
+                print("-" * 50)
+                print(f'Cartas {self.jogador1.nome}: {self.jogador1.cartas_jogador}')
+                print(f'Cartas {self.jogador2.nome}: {self.jogador2.cartas_jogador}')
+                print("-" * 50)
 
-            acao_jogador1 = int(input(f'{self.jogador1.nome}, deseja:'
-                                      f'\n1- Pedir cartas'
-                                      f'\n2- Parar'))
+                acao_jogador1 = int(input(f'{self.jogador1.nome}, deseja:'
+                                          f'\n1- Pedir cartas'
+                                          f'\n2- Parar'))
 
-            if acao_jogador1 == 1:
-                self.sortear_cartas(self.jogador1)
+                print(" ")
+                acao_jogador2 = int(input(f'{self.jogador2.nome} deseja pedir cartas?:'
+                                          f'\n1- Pedir cartas'
+                                          f'\n2- Parar'))
 
-            acao_jogador2 = int(input(f'{self.jogador2.nome} deseja pedir cartas?:'
-                                      f'\n1- Pedir cartas'
-                                      f'\n2- Parar'))
+                if acao_jogador1 == 1 and acao_jogador2 == 1:
+                    self.sortear_cartas(self.jogador1)
+                    self.sortear_cartas(self.jogador2)
+                    self.verificar_vencedor()
 
-            if acao_jogador2 == 1:
-                self.sortear_cartas(self.jogador2)
+                elif acao_jogador1 == 2 or acao_jogador2 == 2:
+                    self.verificar_vencedor()
 
-            if acao_jogador1 == 2 or acao_jogador2 == 2:
-                self.verificar_vencedor()
+                elif acao_jogador1 == 1 and acao_jogador2 == 2:
+                    self.sortear_cartas(self.jogador1)
+                    self.verificar_vencedor()
+
+                elif acao_jogador1 == 2 and acao_jogador2 == 1:
+                    self.sortear_cartas(self.jogador2)
+                    self.verificar_vencedor()
+
+        except TypeError:
+            print("Invalid data")
+            self.start_game()
+
+
 
     def verificar_vencedor(self):
-        self.somar_cartas()
 
-        print(f'{self.jogador1.nome}, suas cartas: {self.jogador1.cartas_jogador}, total: {self.soma_jogador1}')
-        print(f'{self.jogador2.nome}, suas cartas: {self.jogador2.cartas_jogador}, total: {self.soma_jogador2}')
+            if self.somar_cartas1() == 21:
+                print("Congratulations, you won")
 
-        if self.soma_jogador1 == 21:
-            print(f'{self.jogador1.nome}, you won! Congrats!')
-            self.menu()
 
-        elif self.soma_jogador2 == 21:
-            print(f'{self.jogador2.nome}, you won! Congrats!')
-            self.menu()
 
-        elif self.soma_jogador1 > 21 and self.soma_jogador2 > 21:
-            print("You tied")
-            self.menu()
+                # print(f'{player.name}, your cards: {player.cards}, total: {score}')
+                #
+                # if score == 21:
+                #     print(f'{player.name}, you won! Congrats!')
+                #     self.menu()
+                # elif score > 21:
+                #     print(f'{player.name}, you exceeded 21. You lose!')
+                #     self.menu()
+                # else:
+                #     continue
 
-        elif self.soma_jogador1 > 21:
-            print(f'{self.jogador1.nome}, você ultrapassou 21. Você perdeu!')
-            self.menu()
-
-        elif self.soma_jogador2 > 21:
-            print(f'{self.jogador2.nome}, você ultrapassou 21. Você perdeu!')
-            self.menu()
-
-        elif 21 >= self.soma_jogador1 > self.soma_jogador2:
-            print(f'{self.jogador1.nome}, you won! Congrats!')
-            self.menu()
-
-        elif 21 >= self.soma_jogador2 > self.soma_jogador1:
-            print(f'{self.jogador2.nome}, you won! Congrats!')
-            self.menu()
-
-        elif self.soma_jogador1 == self.soma_jogador2:
-            print("You tied!")
-            self.menu()
 
 jogador1 = Jogador("Jogador 1", 100)
 jogador2 = Jogador("Jogador 2", 100)
