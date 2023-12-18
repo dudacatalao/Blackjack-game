@@ -1,19 +1,13 @@
 import random
-
-class Jogador():
-    def __init__(self, nome, fichas):
-        self.nome = nome
-        self.fichas = fichas
-        self.cartas_jogador = []
+from Jogador import Jogador
 
 class Jogo():
     def __init__(self):
         self.jogador1 = None
         self.jogador2 = None
         self.jogadores = [self.jogador1, self.jogador2]
-        self.baralho = {
-            'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'Q': 10, 'J': 10, 'K': 10
-        }
+        self.baralho = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] * 5  # pq o baralho tem 50 cartas
+        self.num = 21
 
     def menu(self):
         try:
@@ -46,7 +40,6 @@ class Jogo():
             print("Invalid data")
             self.menu()
 
-
     def get_baralho(self):
         return self.baralho
 
@@ -64,13 +57,12 @@ class Jogo():
 
     def sortear_cartas(self, jogador):
         for i in range(2):
-            carta = random.choice(list(self.baralho.keys()))
+            carta = random.choice(self.baralho)  # Fixed this line
             jogador.cartas_jogador.append(carta)
-            del self.baralho[carta]
+            self.baralho.remove(carta)  # Fixed this line
 
-    def somar_cartas(self):
-
-
+    def somar_cartas(self, jogador):
+        return sum(jogador.cartas_jogador)
 
     def start_game(self):
         print("Let's start!")
@@ -94,45 +86,46 @@ class Jogo():
                                           f'\n1- Pedir cartas'
                                           f'\n2- Parar'))
 
-                if acao_jogador1 == 1 and acao_jogador2 == 1:
+                if acao_jogador1 == 1:
                     self.sortear_cartas(self.jogador1)
+
+                if acao_jogador2 == 1:
                     self.sortear_cartas(self.jogador2)
-                    self.verificar_vencedor()
 
-                elif acao_jogador1 == 2 or acao_jogador2 == 2:
+                if acao_jogador1 == 2 or acao_jogador2 == 2:
                     self.verificar_vencedor()
+                    break
 
-                elif acao_jogador1 == 1 and acao_jogador2 == 2:
-                    self.sortear_cartas(self.jogador1)
-                    self.verificar_vencedor()
-
-                elif acao_jogador1 == 2 and acao_jogador2 == 1:
-                    self.sortear_cartas(self.jogador2)
-                    self.verificar_vencedor()
-
-        except TypeError:
+        except ValueError:
             print("Invalid data")
             self.start_game()
 
-
-
     def verificar_vencedor(self):
+        soma_jogador1 = self.somar_cartas(self.jogador1)
+        soma_jogador2 = self.somar_cartas(self.jogador2)
 
-            if self.somar_cartas1() == 21:
-                print("Congratulations, you won")
+        if soma_jogador1 == self.num:
+            print(f'{self.jogador1} you won!')
 
+        if soma_jogador2 == self.num:
+            print(f'{self.jogador2} you won!')
 
+        if soma_jogador1 < self.num:
+            print(f'{self.jogador1.nome} you are just with :{soma_jogador1}, play again!')
+            pass
 
-                # print(f'{player.name}, your cards: {player.cards}, total: {score}')
-                #
-                # if score == 21:
-                #     print(f'{player.name}, you won! Congrats!')
-                #     self.menu()
-                # elif score > 21:
-                #     print(f'{player.name}, you exceeded 21. You lose!')
-                #     self.menu()
-                # else:
-                #     continue
+        if soma_jogador2 < self.num:
+            print(f'{self.jogador2.nome} you are just with :{soma_jogador2}, play again!')
+            pass
+
+        if soma_jogador1 > self.num:
+            print(f'{self.jogador1.nome} you exceeded the value!\n {self.jogador2.nome}, you won!')
+
+        if soma_jogador2 > self.num:
+            print(f'{self.jogador2.nome} you exceeded the value!\n {self.jogador1.nome}, you won!')
+
+        else:
+            pass
 
 
 jogador1 = Jogador("Jogador 1", 100)
