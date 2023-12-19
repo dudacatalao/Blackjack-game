@@ -57,9 +57,9 @@ class Jogo():
 
     def sortear_cartas(self, jogador):
         for i in range(2):
-            carta = random.choice(self.baralho)  # Fixed this line
+            carta = random.choice(self.baralho)
             jogador.cartas_jogador.append(carta)
-            self.baralho.remove(carta)  # Fixed this line
+            self.baralho.remove(carta)
 
     def somar_cartas(self, jogador):
         return sum(jogador.cartas_jogador)
@@ -73,8 +73,8 @@ class Jogo():
 
             while True:
                 print("-" * 50)
-                print(f'Cartas {self.jogador1.nome}: {self.jogador1.cartas_jogador}')
-                print(f'Cartas {self.jogador2.nome}: {self.jogador2.cartas_jogador}')
+                print(f'Cartas {self.jogador1.nome}: {self.somar_cartas(jogador1)}')
+                print(f'Cartas {self.jogador2.nome}: {self.somar_cartas(jogador2)}')
                 print("-" * 50)
 
                 acao_jogador1 = int(input(f'{self.jogador1.nome}, deseja:'
@@ -105,31 +105,39 @@ class Jogo():
         soma_jogador2 = self.somar_cartas(self.jogador2)
 
         if soma_jogador1 == self.num:
-            print(f'{self.jogador1} you won!')
+            print(f'{self.jogador1.nome} you won!')
 
-        if soma_jogador2 == self.num:
-            print(f'{self.jogador2} you won!')
-
-        if soma_jogador1 < self.num:
+        elif soma_jogador1 < self.num:
             print(f'{self.jogador1.nome} you are just with :{soma_jogador1}, play again!')
-            pass
-
-        if soma_jogador2 < self.num:
-            print(f'{self.jogador2.nome} you are just with :{soma_jogador2}, play again!')
-            pass
-
-        if soma_jogador1 > self.num:
-            print(f'{self.jogador1.nome} you exceeded the value!\n {self.jogador2.nome}, you won!')
-
-        if soma_jogador2 > self.num:
-            print(f'{self.jogador2.nome} you exceeded the value!\n {self.jogador1.nome}, you won!')
 
         else:
-            pass
+            print(f'{self.jogador1.nome} you exceeded the value!')
+            #break
+
+        if soma_jogador2 == self.num:
+            print(f'{self.jogador2.nome} you won!')
+
+        elif soma_jogador2 < self.num:
+            print(f'{self.jogador2.nome} you are just with :{soma_jogador2}, play again!')
+
+        else:
+            print(f'{self.jogador2.nome} you exceeded the value!')
+            # break
 
 
-jogador1 = Jogador("Jogador 1", 100)
-jogador2 = Jogador("Jogador 2", 100)
+        if soma_jogador1 > self.num and soma_jogador2 > self.num:
+            print('It\'s a draw! Both players exceeded the target value.')
+            # break
+
+        if soma_jogador1 == self.num and soma_jogador2 == self.num:
+            print('It\'s a draw! Both players won!')
+
+
+
+jogador = int(input("Qual o nome do primeiro jogador?"))
+jogador1 = Jogador(jogador, 100)
+jogadors = int(input("Qual o nome do primeiro jogador?"))
+jogador2 = Jogador(jogadors, 100)
 
 jogo = Jogo()
 jogo.jogador1 = jogador1
