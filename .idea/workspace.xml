@@ -7,6 +7,7 @@
     <list default="true" id="ca3e3223-9684-4bf8-b901-ef06f0b287d1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jogador.py" beforeDir="false" afterPath="$PROJECT_DIR$/Jogador.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jogo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Jogo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

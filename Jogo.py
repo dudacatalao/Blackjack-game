@@ -10,6 +10,7 @@ class Jogo():
         self.num = 21
         self.diferenca_jogador1 = 0
         self.diferenca_jogador2 = 0
+        self.winner = None
 
     def menu(self):
         try:
@@ -40,6 +41,11 @@ class Jogo():
             print("Invalid data")
             self.menu()
 
+    @property
+    def get_jogadores(self):
+        return self.jogadores
+
+    @property
     def get_baralho(self):
         return self.baralho
 
@@ -64,7 +70,6 @@ class Jogo():
     def somar_cartas(self, jogador):
         return sum(jogador.cartas_jogador)
 
-
     def dif(self, soma_jogador):
         if soma_jogador > self.num:
             return soma_jogador - self.num
@@ -78,6 +83,9 @@ class Jogo():
             self.jogador1 = Jogador(input("What is the name of the first player?"), 100)
             self.jogador2 = Jogador(input("What is the name of the second player?"), 100)
             print("Both of you start's with 100 betting chips")
+            aposta_jogador1 = input(f'{self.jogador1} do you want to bet how many chips?')
+            aposta_jogador2 = input(f'{self.jogador2} do you want to bet how many chips?')
+
 
             self.sortear_cartas(self.jogador1)
             self.sortear_cartas(self.jogador2)
@@ -126,18 +134,22 @@ class Jogo():
 
         if self.soma_jogador1 == self.num:
             print(f'{self.jogador1.nome} you won!')
+            self.winner = self.jogador1
 
         elif self.soma_jogador2 == self.num:
             print(f'{self.jogador2.nome} you won!')
+            self.winner = self.jogador2
 
         elif self.soma_jogador1 > self.num and self.soma_jogador2 > self.num:
             print('It\'s a draw! Both players exceeded the target value.')
 
         elif diferenca_jogador1 < diferenca_jogador2:
             print(f'{self.jogador1.nome} you have :{self.soma_jogador1}, you are closer to 21,  you won!\nand {self.jogador2.nome}, you have {self.soma_jogador2}')
+            self.winner = self.jogador1
 
         elif diferenca_jogador2 < diferenca_jogador1:
             print(f'{self.jogador2.nome} you have :{self.soma_jogador2}, you are closer to 21, you won!\nand {self.jogador1.nome}, you have {self.jogador1}')
+            self.winner = self.jogador2
 
         else:
             print('It\'s a draw! Both players have the same difference from 21.')
