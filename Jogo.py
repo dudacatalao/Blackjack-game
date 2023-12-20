@@ -3,14 +3,16 @@ from Jogador import Jogador
 
 class Jogo():
     def __init__(self):
-        self.jogador1 = None
-        self.jogador2 = None
-        self.jogadores = [self.jogador1, self.jogador2]
-        self.baralho = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        self.num = 21
-        self.diferenca_jogador1 = 0
-        self.diferenca_jogador2 = 0
-        self.winner = None
+        self.__jogador1 = None
+        self.__jogador2 = None
+        self.__jogadores = [self.__jogador1, self.__jogador2]
+        self.__baralho = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.__num = 21
+        self.__diferenca_jogador1 = 0
+        self.__diferenca_jogador2 = 0
+        self.__winner = None
+        self.__fichas_apostadas1 = []
+        self.__fichas_apostadas2 = []
 
     def menu(self):
         try:
@@ -43,11 +45,10 @@ class Jogo():
 
     @property
     def get_jogadores(self):
-        return self.jogadores
+        return self.__jogadores
 
-    @property
     def get_baralho(self):
-        return self.baralho
+        return self.__baralho
 
     def regras(self):
         print("Rules blackjack")
@@ -63,59 +64,69 @@ class Jogo():
 
     def sortear_cartas(self, jogador):
         for i in range(1):
-            carta = random.choice(self.baralho)
+            carta = random.choice(self.__baralho)
             jogador.cartas_jogador.append(carta)
-            self.baralho.remove(carta)
+            self.__baralho.remove(carta)
 
     def somar_cartas(self, jogador):
         return sum(jogador.cartas_jogador)
 
     def dif(self, soma_jogador):
-        if soma_jogador > self.num:
-            return soma_jogador - self.num
+        if soma_jogador > self.__num:
+            return soma_jogador - self.__num
         else:
-            return self.num - soma_jogador
+            return self.__num - soma_jogador
+
+    def aposta(self):
+        if self.__winner == self.__jogador1:
+            self.__jogador1.fichas += sum(self.__fichas_apostadas2)
+            self.__fichas_apostadas2.clear()
+        elif self.__winner == self.__jogador2:
+            self.__jogador2.fichas += sum(self.__fichas_apostadas1)
+            self.__fichas_apostadas1.clear()
 
     def start_game(self):
         print("Let's start!")
 
         try:
-            self.jogador1 = Jogador(input("What is the name of the first player?"), 100)
-            self.jogador2 = Jogador(input("What is the name of the second player?"), 100)
+            self.__jogador1 = Jogador(input("What is the name of the first player?"), 100)
+            self.__jogador2 = Jogador(input("What is the name of the second player?"), 100)
+            print("-" * 50)
             print("Both of you start's with 100 betting chips")
-            aposta_jogador1 = input(f'{self.jogador1} do you want to bet how many chips?')
-            aposta_jogador2 = input(f'{self.jogador2} do you want to bet how many chips?')
+            aposta_jogador1 = float(input(f'{self.__jogador1.nome} do you want to bet how many chips? R$'))
+            aposta_jogador2 = float(input(f'{self.__jogador2.nome} do you want to bet how many chips? R$'))
+            self.__fichas_apostadas1.append(aposta_jogador1)
+            self.__fichas_apostadas2.append(aposta_jogador2)
 
-
-            self.sortear_cartas(self.jogador1)
-            self.sortear_cartas(self.jogador2)
+            self.sortear_cartas(self.__jogador1)
+            self.sortear_cartas(self.__jogador2)
 
             while True:
                 print("-" * 50)
-                print(f'Cards {self.jogador1.nome}: {self.somar_cartas(self.jogador1)}')
-                print(f'Cards {self.jogador2.nome}: {self.somar_cartas(self.jogador2)}')
+                print(f'Cards {self.__jogador1.nome}: {self.somar_cartas(self.__jogador1)}')
+                print(f'Cards {self.__jogador2.nome}: {self.somar_cartas(self.__jogador2)}')
                 print("-" * 50)
 
-                acao_jogador1 = int(input(f'{self.jogador1.nome}, you want?:'
+                acao_jogador1 = int(input(f'{self.__jogador1.nome}, you want?:'
                                           f'\n1- Ask for cards'
                                           f'\n2- Stop\n'))
 
                 print(" ")
-                acao_jogador2 = int(input(f'{self.jogador2.nome} you want?:'
+                acao_jogador2 = int(input(f'{self.__jogador2.nome} you want?:'
                                           f'\n1- Ask for cards'
                                           f'\n2- Stop\n'))
 
                 if acao_jogador1 == 1:
-                    self.sortear_cartas(self.jogador1)
+                    self.sortear_cartas(self.__jogador1)
 
                 if acao_jogador1 == 1 and acao_jogador2 == 2:
-                    self.sortear_cartas(self.jogador1)
+                    self.sortear_cartas(self.__jogador1)
 
                 if acao_jogador1 == 2 and acao_jogador2 == 1:
-                    self.sortear_cartas(self.jogador2)
+                    self.sortear_cartas(self.__jogador2)
 
                 if acao_jogador2 == 1:
-                    self.sortear_cartas(self.jogador2)
+                    self.sortear_cartas(self.__jogador2)
 
                 if acao_jogador1 == 2 or acao_jogador2 == 2:
                     self.verificar_vencedor()
@@ -126,35 +137,50 @@ class Jogo():
             self.start_game()
 
     def verificar_vencedor(self):
-        self.soma_jogador1 = self.somar_cartas(self.jogador1)
-        self.soma_jogador2 = self.somar_cartas(self.jogador2)
+        self.soma_jogador1 = self.somar_cartas(self.__jogador1)
+        self.soma_jogador2 = self.somar_cartas(self.__jogador2)
 
         diferenca_jogador1 = self.dif(self.soma_jogador1)
         diferenca_jogador2 = self.dif(self.soma_jogador2)
 
-        if self.soma_jogador1 == self.num:
-            print(f'{self.jogador1.nome} you won!')
-            self.winner = self.jogador1
+        if self.soma_jogador1 == self.__num:
+            print(f'{self.__jogador1.nome} you won!')
+            self.__winner = self.__jogador1
+            self.aposta()
+            print(f'Now {self.__winner.nome} has R${self.__jogador1.fichas} betting chips')
 
-        elif self.soma_jogador2 == self.num:
-            print(f'{self.jogador2.nome} you won!')
-            self.winner = self.jogador2
+        elif self.soma_jogador2 == self.__num:
+            print("-" * 50)
+            print(f'{self.__jogador2.nome} you won!')
+            self.__winner = self.__jogador2
+            self.aposta()
+            print(f'Now {self.__winner.nome} has R${self.__jogador2.fichas} betting chips')
 
-        elif self.soma_jogador1 > self.num and self.soma_jogador2 > self.num:
-            print('It\'s a draw! Both players exceeded the target value.')
+        elif self.soma_jogador1 > self.__num and self.soma_jogador2 > self.__num:
+            print("-" * 50)
+            print(
+                f'It\'s a draw! Both players exceeded the target value.\n{self.__jogador1.nome}:{self.soma_jogador1}\n{self.__jogador2.nome}:{self.soma_jogador2}')
 
         elif diferenca_jogador1 < diferenca_jogador2:
-            print(f'{self.jogador1.nome} you have :{self.soma_jogador1}, you are closer to 21,  you won!\nand {self.jogador2.nome}, you have {self.soma_jogador2}')
-            self.winner = self.jogador1
+            print("-" * 50)
+            print(
+                f'{self.__jogador1.nome} you has :{self.soma_jogador1}, you are closer to 21,  you won!\nand {self.__jogador2.nome}, you have {self.soma_jogador2} :(')
+            self.__winner = self.__jogador1
+            self.aposta()
+            print(f'Now {self.__winner.nome} has R${self.__jogador1.fichas} betting chips')
 
         elif diferenca_jogador2 < diferenca_jogador1:
-            print(f'{self.jogador2.nome} you have :{self.soma_jogador2}, you are closer to 21, you won!\nand {self.jogador1.nome}, you have {self.jogador1}')
-            self.winner = self.jogador2
+            print("-" * 50)
+            print(
+                f'{self.__jogador2.nome} you has :{self.soma_jogador2}, you are closer to 21, you won!\nand {self.__jogador1.nome}, you have {self.soma_jogador1} :(')
+            self.__winner = self.__jogador2
+            self.aposta()
+            print(f'Now {self.__winner.nome} has R${self.__jogador2.fichas} betting chips')
 
         else:
-            print('It\'s a draw! Both players have the same difference from 21.')
-
-        exit()
+            print("-" * 50)
+            print(
+                f'It\'s a draw! Both players have the same difference from 21.\n{self.__jogador1.nome}:{self.soma_jogador1}\n{self.__jogador2.nome}:{self.soma_jogador2}')
 
 
 if __name__ == '__main__':
