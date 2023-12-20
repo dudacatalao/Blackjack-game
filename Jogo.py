@@ -6,7 +6,7 @@ class Jogo():
         self.__jogador1 = None
         self.__jogador2 = None
         self.__jogadores = [self.__jogador1, self.__jogador2]
-        self.__baralho = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.__baralho = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] * 5
         self.__num = 21
         self.__diferenca_jogador1 = 0
         self.__diferenca_jogador2 = 0
@@ -26,7 +26,11 @@ class Jogo():
 
             match option:
                 case 1:
+                    self.__jogador1 = Jogador(input("What is the name of the first player?"), 100)
+                    self.__jogador2 = Jogador(input("What is the name of the second player?"), 100)
+                    print("Both of you start's with 100 betting chips")
                     self.start_game()
+                    self.play_again()
 
                 case 2:
                     print("Value of cards:")
@@ -89,14 +93,16 @@ class Jogo():
         print("Let's start!")
 
         try:
-            self.__jogador1 = Jogador(input("What is the name of the first player?"), 100)
-            self.__jogador2 = Jogador(input("What is the name of the second player?"), 100)
+
             print("-" * 50)
-            print("Both of you start's with 100 betting chips")
             aposta_jogador1 = float(input(f'{self.__jogador1.nome} do you want to bet how many chips? R$'))
             aposta_jogador2 = float(input(f'{self.__jogador2.nome} do you want to bet how many chips? R$'))
             self.__fichas_apostadas1.append(aposta_jogador1)
             self.__fichas_apostadas2.append(aposta_jogador2)
+
+            if aposta_jogador1 > self.__jogador1.fichas or aposta_jogador2 > self.__jogador2.fichas:
+                print("You doesn't have this chips, re-bet")
+                self.start_game()
 
             self.sortear_cartas(self.__jogador1)
             self.sortear_cartas(self.__jogador2)
@@ -156,12 +162,12 @@ class Jogo():
             self.aposta()
             print(f'Now {self.__winner.nome} has R${self.__jogador2.fichas} betting chips')
 
+
         elif self.soma_jogador1 > self.__num and self.soma_jogador2 > self.__num:
             print("-" * 50)
-            print(
-                f'It\'s a draw! Both players exceeded the target value.\n{self.__jogador1.nome}:{self.soma_jogador1}\n{self.__jogador2.nome}:{self.soma_jogador2}')
+            print(f'It\'s a draw! Both players exceeded the target value.\n{self.__jogador1.nome}:{self.soma_jogador1}\n{self.__jogador2.nome}:{self.soma_jogador2}')
 
-        elif diferenca_jogador1 < diferenca_jogador2:
+        elif diferenca_jogador1 < diferenca_jogador2 and self.soma_jogador1 < self.__num:
             print("-" * 50)
             print(
                 f'{self.__jogador1.nome} you has :{self.soma_jogador1}, you are closer to 21,  you won!\nand {self.__jogador2.nome}, you have {self.soma_jogador2} :(')
@@ -169,7 +175,7 @@ class Jogo():
             self.aposta()
             print(f'Now {self.__winner.nome} has R${self.__jogador1.fichas} betting chips')
 
-        elif diferenca_jogador2 < diferenca_jogador1:
+        elif diferenca_jogador2 < diferenca_jogador1 and self.soma_jogador2 < self.__num:
             print("-" * 50)
             print(
                 f'{self.__jogador2.nome} you has :{self.soma_jogador2}, you are closer to 21, you won!\nand {self.__jogador1.nome}, you have {self.soma_jogador1} :(')
@@ -182,6 +188,16 @@ class Jogo():
             print(
                 f'It\'s a draw! Both players have the same difference from 21.\n{self.__jogador1.nome}:{self.soma_jogador1}\n{self.__jogador2.nome}:{self.soma_jogador2}')
 
+    def play_again(self):
+        # arrumar
+        print("-"*50)
+        option = int(input("Do you want to play again?\n1- Yes\n2-No"))
+        match option:
+            case 1:
+                self.start_game()
+
+            case 2:
+                exit()
 
 if __name__ == '__main__':
     print("------"
