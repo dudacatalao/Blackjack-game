@@ -89,6 +89,19 @@ class Jogo():
             self.__jogador2.fichas += sum(self.__fichas_apostadas1)
             self.__fichas_apostadas1.clear()
 
+    # def players(self):
+    #     qtd = int(input("How much players:"))
+    #
+    #     if qtd <= 2:
+    #         contador = 1
+    #         for i in range(qtd):
+    #             nome = input(f'What\'s the name of the {contador} player?')
+    #
+    #
+    #     else:
+    #         print("The minimum to play is 2 players")
+
+
     def start_game(self):
         print("Let's start!")
 
@@ -191,10 +204,10 @@ class Jogo():
     def play_again(self):
         # arrumar
         print("-"*50)
-        option = int(input("Do you want to play again?\n1- Yes\n2-No"))
+        option = int(input("Do you want to play again?\n1- Yes\n2- No"))
         match option:
             case 1:
-                self.start_game()
+                self.menu()
 
             case 2:
                 exit()

@@ -5,7 +5,7 @@ class Jogador():
         self.__cartas_jogador = []
         self.__fichas_apostadas = []
 
-    #Getters
+    #getters
     @property
     def fichas(self):
         return self.__fichas
@@ -22,7 +22,7 @@ class Jogador():
     def fichas_apostadas(self):
         return self.__fichas_apostadas
 
-    #Setters
+    #setters
     @fichas.setter
     def fichas(self, novo_valor):
         self.__fichas = novo_valor
